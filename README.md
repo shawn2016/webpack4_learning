@@ -1,10 +1,47 @@
 # webpack4_learning
 
-### 安装
+### webpack 4不需要配置文件了！
+
+webpack 4作为零配置模块捆绑器
+
+webpack功能强大，有很多独特的功能，但其中一个难点是配置文件。
+
+为中大型项目提供webpack的配置并不是什么大问题。 然而，对于较小的项目来说，这很麻烦，特别是当你想要启动一些玩具应用时。
+
+这就是Parcel得到了很多注意力的原因。
+
+Sean和webpack团队改变了这一现状：webpack 4默认不需要配置文件！
+
+### 初始化
 
 ```
-yarn add webpack -D
+npm init
 ```
+
+### 安装webpack
+
+```
+npm i webpack -D
+```
+
+### 安装webpack-cli
+
+```
+npm i webpack-cli -D
+```
+
+### 运行
+
+```
+npm run build
+```
+
+这时候会报错，因为默认找入口文件路径src/index.js，所以需先新增src/index.js
+
+
+
+1. 从webpack 4开始，不需要定义入口点：它会将./src/index.js作为默认值！
+2. 在webpack 4中，不需要定义入口点和输出文件。（./dist/main.js）
 
 ### 环境
 
