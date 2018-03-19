@@ -1,17 +1,17 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
-const isDev = process.env.NODE_ENV === 'development'
 
-const config = {
+module.exports = {
     // 应用入口
     entry: {
-        app: path.join(__dirname, './src/app.js')  // app.js作为打包的入口
+        app: path.join(__dirname, './src/server-entry.js')  // app.js作为打包的入口
     },
     // 输出目录
     output: {
-        filename: '[name].[hash].js',  //name代表entry对应的名字; hash代表 整个app打包完成后根据内容加上hash。一旦整个文件内容变更，hash就会变化
+        filename: 'server-entry.js',  // node端没有浏览器缓存这个概念，并且需要在node中直接import这个文件。故直接命名就好
         path: path.join(__dirname, './dist'), // 打包好之后的输出路径
-        publicPath: '/public' // 静态资源文件引用时的路径（加在引用静态资源前面的）
+        publicPath: '',
+        libraryTarget: 'commonjs2' // 打包出来js模块所使用的方案（umd、amd、cmd、commonJS）这里我们使用commonjs2，适用于node端
     },
     module: {
         rules: [
@@ -33,6 +33,7 @@ const config = {
             }
         ]
     },
+    target: 'node', //webpack打包出来的内容使用在什么环境下    
     optimization: {
         splitChunks: {
             chunks: "initial",         // 必须三选一： "initial" | "all"(默认就是all) | "async"
@@ -56,29 +57,5 @@ const config = {
                 }
             }
         }
-    },
-    plugins: [
-        new HtmlWebPackPlugin({
-            template: "./src/index.html",
-            filename: "./index.html",
-            inject:true
-        })
-    ],
-};
-if (isDev) {
-    config.devServer = {
-        host: '0.0.0.0',  // 我们可以允许我们用任意方式进行访问（127.0.0.1，localhost, 本机ip）
-        port: '8888',
-        contentBase: path.join(__dirname, './dist'),
-        // hot: true,  //启动热加载
-        overlay: {  // 错误提醒弹窗小遮层
-            errors: true //只显示error
-        },
-        // 和output配置对应起来
-        publicPath: '/public',  // 访问所有静态路径都要前面加/public才能访问生成的静态文件
-        historyApiFallback: {
-            index: '/public/index.html' // 所有404的请求全部访问该配置下的url
-        }
     }
-}
-module.exports = config
+};
